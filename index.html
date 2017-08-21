@@ -12,80 +12,195 @@
 </head>
 
 <body class="bgimg">
-	<table width="100%" heigth=100%>
-		<tr width="100%" height="100%">
-			<td width="30%" height="100%">
 
-				<div id="mySidenav" class="sidenav">
+	<div id="mySidenav" class="sidenav">
 
-					<a href="#" onclick="closeNav()">Inicio <i class="fa fa-home" aria-hidden="true"></i> </a>
-					<a href="#">Clientes <i class="fa fa-address-book-o" aria-hidden="true" onclick="hide()"></i> </a>
-					<a href="#">Articulos <i class="fa fa-cubes" aria-hidden="true"></i> </a>
-					<a href="#">Compra <i class="fa fa-shopping-cart" aria-hidden="true"></i> </a>
+		<a href="#">Inicio <i class="fa fa-home" aria-hidden="true"></i> </a>
+		<a id="clientClick" href="#">Clientes <i class="fa fa-address-book-o" aria-hidden="true"></i> </a>
+		<a id="articleClick" href="#">Articulos <i class="fa fa-cubes" aria-hidden="true"></i> </a>
+		<a href="#">Compra <i class="fa fa-shopping-cart" aria-hidden="true"></i> </a>
 
-				</div>
+	</div>
 
-			</td>
 
-			<!-- Render forms -->
-			<td width="70%" height="100%">
+	<!-- Render forms -->
+	<div id="formsContainer" class="formsContainer">
 
-				<!-- Clients -->
-				<div id="ClientRegister">
-					<h1>Clientes</h1>
-					<hr width="80%" align="left">
-					<br>
-					<br>
+		<!-- Clients register -->
+		<div id="clientRegister" class="renderForm">
 
-					<div class="card">
 
-						<div class="container">
-							<h2>Ingreso de cliente</h2>
-							<hr>
+			<h1>Clientes</h1>
+			<hr width="80%" align="left">
+			<br>
+			<br>
+			<div id="clientFormMessages">
+			</div>
+			<div class="card">
 
-							<form>
+				<div class="container">
+					<h2>Ingreso de cliente</h2>
+
+					<hr>
+					<form id="frmAddClient">
+						<div class="inner-card">
+							<div class="fields">
+								<span>
+									<label> <b>Nombre:</b> </label>
+									<input id="txtName" type="text" name="name" maxlength="20" size="20" required/>
+								</span>
+								<br>
+
+								<span>
+									<label> <b>Apellido:</b> </label>
+									<input id="txtSurname" type="text" name="surname" maxlength="20" size="20" required/>
+								</span>
+								<br>
+								<span>
+									<label> <b>Edad:</b> </label>
+									<input id="txtAge" type="number" min="18" max="100" size="3" required/>
+								</span>
+								<br>
 								<div>
-									<div>
-										<label> <b>Nombre:</b> </label>
-										<label> <b>Apellido:</b> </label>
-										<label> <b>Direcccion:</b> </label>
-										<label> <b>Email:</b> </label>
-										<label><b>Barrio:</b></label>
-									</div>
-									<div>
-										<input> </input>
-
-										<input> </input>
-
-										<input> </input>
-
-										<input> </input>
-										<input id="txtDataList" type="text" list="myData">
-										<datalist id="myData">
-											<option value="Aguada"></option>
-											<option value="Prado"></option>
-											<option value="Pocitos"></option>
-											<option value="Malvin"></option>
-										</datalist>
-									</div>
+									<label> <b>Sexo:</b> </label>
+									<input type="radio" name="radioGender" value="male" required> Masculino
+									<input type="radio" name="radioGender" value="female"> Femenino
 								</div>
+								<br>
 
+								<span>
+										<label> <b>Celular:</b> </label>
+										<input id="txtCellphone" type="text" name="cellphone" maxlength="9" size="9"/>
+									</span>
+								<br>
+								<span>
+										<label> <b>Direcccion:</b> </label>
+										<input id="txtAddress" type="text" name="address" maxlength="30" size="30" required/>
+									</span>
+								<br>
+								<span>
+										<label> <b>Email:</b> </label>
+										<input id="txtEmail" type="text" name="email" maxlength="20" required/>
+									</span>
+								<br>
+								<div>
+									<label><b>Barrio:</b></label>
+									<input id="txtNeighborhood" type="text" list="neighborhoodList" required>
+									<datalist id="neighborhoodList">
+										<option value="Aguada"></option>
+										<option value="Carrasco"></option>
+										<option value="Centro"></option>
+										<option value="Ciudad Vieja"></option>
+										<option value="Cordon"></option>
+										<option value="La Blanqueada"></option>
+										<option value="Malvin"></option>
+										<option value="Palermo"></option>
+										<option value="Parque Batlle"></option>
+										<option value="Parque Rodo"></option>
+										<option value="Paso Molino"></option>
+										<option value="Pocitos"></option>
+										<option value="Prado"></option>
+										<option value="Punta Carretas"></option>
+									</datalist>
+								</div>
+							</div>
+
+							<div class="buttonArea">
 								<hr>
-								<input type="submit" align="right"></input>
+								<input type="submit" align="right" value="Guardar"></input>
 
-							</form>
-
-						</div>
+							</div>
+					</form>
 					</div>
 				</div>
+			</div>
+		</div>
+
+		<!-- Articles -->
+		<div id="articleOptions">
+
+			<h1>Opciones de Articulos</h1>
+			<hr width="80%" align="left">
+			<br>
+			<br>
+
+			<div class="options">
+				<form>
+
+					<span><input id= "btnConsultArticles" type="button" class="hoverableButton" value="Consultar"></input></span>
+					<span><input id= "btnRegisterArticles" type="button" class="hoverableButton" value="Registrar"></input></span>
+
+				</form>
+			</div>
+
+		</div>
+
+		<!-- Articles register -->
+		<div id="articleRegister" class="renderForm">
 
 
-			</td>
-		</tr>
-	</table>
+			<h1>Articulo</h1>
+			<hr width="80%" align="left">
+			<br>
+			<br>
+			<div id="articleFormMessages">
+			</div>
+			<div class="card">
 
+				<div class="container">
+					<h2>Ingreso de articulo</h2>
 
+					<hr>
+					<form id="frmAddArticle">
+						<div class="inner-card">
+							<div class="fields">
+								<span>
+									<label> <b>Nombre:</b> </label>
+									<input id="txtArtName" type="text" name="name" maxlength="20" size="20" required/>
+								</span>
+								<br>
+								<span>
+									<label> <b>Id:</b> </label>
+									<input id="txtArtId" type="number" min="1" max="500" size="3" required/>
+								</span>
+								<br>
+								<div>
+									<label> <b>Descripcion:</b> </label>
+									<textarea id="txtArtDescription" name="artDescription" cols="20" rows="1"></textarea>
+								</div>
+								<br>
+								<span>
+									<label> <b>Precio:</b> </label>
+									<input id="txtArtPrice" type="number" name="price" maxlength="10" size="10" required/>
+								</span>
+								<br>
+								<span>
+										<label> <b>Categoria:</b> </label>
+										<select id="optCategory" required>
+											<option value="Toys">Juguetes</option>
+											<option value="School">Escolares</option>
+											<option value="Office">Oficina</option>
+											<option value="Food">Alimentos</option>
+											<option value="Cleaning">Limpieza</option>
+											<option value="Others">Otros</option>
+										</select>
+								</span>
+								<br>
+							</div>
 
+							<div class="buttonArea">
+								<hr>
+								<input type="submit" align="right" value="Guardar"></input>
+
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</div>
 
 
 </body>

@@ -1,18 +1,19 @@
 
 body {
     font-family: "Lato", sans-serif;
-    
+    padding-left: 0;
 }
 
 .sidenav {
     height: 100%;
+    width: 200px;
     position: fixed;
     z-index: 1;
     top: 0;
     left: 0;
     background-color: #111;
     transition: 0.5s;
-    padding-top: 60px;
+    padding-top: 15%;
     opacity: 0.95;
 }
 
@@ -23,24 +24,30 @@ body {
     color: #818181;
     display: block;
     transition: 0.3s;
-    padding-top: 20px;
 }
 
 .sidenav a:hover, .offcanvas a:focus{
     color: #f1f1f1;
 }
 
-bgimg {
+.bgimg {
     background-image: url('../img/background-image3.jpg');
     z-index:-1;
 }
 
 .card {
+    opacity: 0.92;
+    background-color: white;
     box-shadow: 5px 5px 8px 2px rgba(1,1,1,0.5);
     transition: 0.3s;
-    width: 50%;
-    border-radius: 5px;
+    width: 80%;
+    border-radius: 10px;
     z-index: 1;
+}
+
+.inner-card{
+    background-color:white;
+    display: grid;
 }
 
 img {
@@ -48,6 +55,106 @@ img {
 }
 
 .container {
-    padding: 10px 16px;
+    padding: 10px 10px;
     z-index: 1;
+}
+
+.formsContainer{
+    float:right;
+    height: 100%;
+    width: 80%;
+    padding-left:200px;
+
+}
+
+.options{
+    float:center;
+    text-align: center;
+    height: 50%;
+    width: 50%;
+    padding-top:15%;
+    padding-left: 15%;
+}
+
+.options hoverableButton{
+    padding-top: 20px;
+    padding: 10px 20px;
+}
+
+.hoverableButton {
+    background-color: black; /* Green */
+    border: none;
+    color: #818181; 
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    padding: 12px 28px;
+    border-radius: 4px;
+    transition-duration: 0.3s;
+} 
+
+.hoverableButton:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    color: white;
+}
+
+.fields{
+    /*float:right;*/
+    display:grid;
+    padding-bottom: 5px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.fields label{
+    width: 100px;
+    display:inline-block;
+}
+
+.buttonArea{
+    position: relative;
+}
+
+.fieldError{
+    border:2px solid red;
+    background-color:pink;
+    
+}
+
+.divError{
+    border:2px solid red;
+    background-color:pink;
+    color: red;
+    border-radius: 4px;
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 10px;
+    width: 60%;
+    box-shadow: 5px 5px 8px 2px rgba(1,1,1,0.5);
+}
+
+.divOk{
+    border:2px solid RGB(0, 102, 51);
+    background-color:RGB(153, 255, 153);
+    color: green;
+    border-radius: 4px;
+    padding: 5px 5px 5px 5px;
+    margin-bottom: 10px;
+    width: 60%;
+    box-shadow: 5px 5px 8px 2px rgba(1,1,1,0.5);
+}
+
+.error{
+    color: red;
+    margin-left:5px;
+}
+/*span{
+    padding: 50px 30px 50px 80px;
+}*/
+.renderForm{
+    /*opacity: 1;*/
+}
+
+h1 {
+    color: white;
+    text-shadow: 4px 4px 5px #000000;
 }
