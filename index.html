@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
 	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.css">
 	<script src="js/jquery-2.1.0.min.js" type="text/javascript"></script>
+	<script src="js/jquery-qrcode-0.14.0.min.js" type="text/javascript"></script>
 	<script src="js/functions.js" type="text/javascript"></script>
 
 </head>
@@ -17,7 +18,7 @@
 
 		<a href="#">Inicio <i class="fa fa-home" aria-hidden="true"></i> </a>
 		<a id="clientClick" href="#">Clientes <i class="fa fa-address-book-o" aria-hidden="true"></i> </a>
-		<a id="articleClick" href="#">Articulos <i class="fa fa-cubes" aria-hidden="true"></i> </a>
+		<a id="itemClick" href="#">Articulos <i class="fa fa-cubes" aria-hidden="true"></i> </a>
 		<a href="#">Compra <i class="fa fa-shopping-cart" aria-hidden="true"></i> </a>
 
 	</div>
@@ -34,8 +35,11 @@
 			<hr width="80%" align="left">
 			<br>
 			<br>
+
+			<!-- Client messages -->
 			<div id="clientFormMessages">
 			</div>
+
 			<div class="card">
 
 				<div class="container">
@@ -116,8 +120,8 @@
 			</div>
 		</div>
 
-		<!-- Articles -->
-		<div id="articleOptions">
+		<!-- Items -->
+		<div id="itemOptions">
 
 			<h1>Opciones de Articulos</h1>
 			<hr width="80%" align="left">
@@ -127,23 +131,25 @@
 			<div class="options">
 				<form>
 
-					<span><input id= "btnConsultArticles" type="button" class="hoverableButton" value="Consultar"></input></span>
-					<span><input id= "btnRegisterArticles" type="button" class="hoverableButton" value="Registrar"></input></span>
+					<span><input id= "btnConsultItems" type="button" class="hoverableButton" value="Consultar"></input></span>
+					<span><input id= "btnRegisterItems" type="button" class="hoverableButton" value="Registrar"></input></span>
 
 				</form>
 			</div>
 
 		</div>
 
-		<!-- Articles register -->
-		<div id="articleRegister" class="renderForm">
+		<!-- Items register -->
+		<div id="itemRegister" class="renderForm">
 
 
 			<h1>Articulo</h1>
 			<hr width="80%" align="left">
 			<br>
 			<br>
-			<div id="articleFormMessages">
+
+			<!-- Items messages -->
+			<div id="itemFormMessages">
 			</div>
 			<div class="card">
 
@@ -151,27 +157,27 @@
 					<h2>Ingreso de articulo</h2>
 
 					<hr>
-					<form id="frmAddArticle">
+					<form id="frmAddItem">
 						<div class="inner-card">
 							<div class="fields">
 								<span>
 									<label> <b>Nombre:</b> </label>
-									<input id="txtArtName" type="text" name="name" maxlength="20" size="20" required/>
+									<input id="txtItemName" type="text" name="name" maxlength="20" size="20" required/>
 								</span>
 								<br>
 								<span>
 									<label> <b>Id:</b> </label>
-									<input id="txtArtId" type="number" min="1" max="500" size="3" required/>
+									<input id="txtItemId" type="number" min="1" max="500" size="3" required/>
 								</span>
 								<br>
 								<div>
 									<label> <b>Descripcion:</b> </label>
-									<textarea id="txtArtDescription" name="artDescription" cols="20" rows="1"></textarea>
+									<textarea id="txtItemDescription" name="itemDescription" cols="20" rows="1"></textarea>
 								</div>
 								<br>
 								<span>
 									<label> <b>Precio:</b> </label>
-									<input id="txtArtPrice" type="number" name="price" maxlength="10" size="10" required/>
+									<input id="txtItemPrice" type="number" step="0.01" name="price" maxlength="10" size="10" required/>
 								</span>
 								<br>
 								<span>
@@ -193,12 +199,56 @@
 								<input type="submit" align="right" value="Guardar"></input>
 
 							</div>
+
+							<div id="itemQR">
+								<div class="card">
+
+									<div class="container">
+										<h2>Código QR generado para el articulo <label id="lblQR"></label></h2>
+
+										<hr>
+
+										<div id="itemQRContainer" class="inner-card">
+
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-	</div>
+
+		<!-- Items register -->
+		<div id="itemConsult" class="renderForm">
+
+
+			<h1>Consulta de Articulos</h1>
+			<hr width="80%" align="left">
+			<br>
+			<br>
+
+			<div class="card">
+
+				<div class="container">
+					<h2>Articulos ingresados</h2>
+
+					<hr>
+
+					<div class="inner-card">
+						<table id="itemsTable">
+
+						</table>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
 
 	</div>
 

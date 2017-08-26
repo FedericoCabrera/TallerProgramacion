@@ -158,3 +158,15 @@ h1 {
     color: white;
     text-shadow: 4px 4px 5px #000000;
 }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
