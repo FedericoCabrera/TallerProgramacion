@@ -3,6 +3,7 @@
 //Arrays
 var clients = [];
 var items = [];
+var purchases = [];
 
 //Association between item category and icon image
 var itemImage = [
@@ -39,6 +40,8 @@ var fieldErrors = [];
 //Global variables
 var activeForm;
 var errors = false;
+var selectedClient;
+var selectedItem;
 
 $(document).ready(initialize);
 
@@ -51,6 +54,8 @@ function initialize() {
     $("#itemQR").hide();
     $("#purchasesOptions").hide();
     $("#purchaseRegister").hide();
+    $("#purchItemSelection").hide();
+
 
     showForm("#clientClick", "#clientRegister");
     showForm("#itemClick", "#itemOptions");
@@ -391,31 +396,53 @@ function createItemsTable() {
 
 /********************* Purchases *********************/
 
+//Load clients, items and purchase details, it also sets buttons click events
 function loadRegisterPurchaseData() {
+    
     loadClients();
+    $("#btnPurchClientSelect").click(clientSelection);
     loadItems();
 }
 
 //Sorts and loads clients into options
 function loadClients() {
-    $("#optClientCategory").empty();
+    //Resets form
+    $("#optClientPurchase").empty();
+    $("#purchItemSelection").hide();
+    //$('#frmAddPurchase')[0].reset();
 
     if (clients.length > 0) {
+
         //Sorts items array by email
         clients.sort(function (a, b) { return (a.email > b.email) ? 1 : ((b.email > a.email) ? -1 : 0); });
 
         //Adds clients
         $(clients).each(function (index, element) {
-            $("#optClientCategory").append("<option value='" + element.email + "'>" + element.email + " - " + element.name + "</option>");
+            $("#optClientPurchase").append("<option value='" + element.email + "'>" + element.email + " - " + element.name + "</option>");
         });
 
     }
+}
 
+//Sets selected client
+function clientSelection(){
+
+    var clientId = $("#optClientPurchase").find(":selected").val();
+    alert(clientId);
+    selectedClient = getClientById(clientId);
+    
+    alert("Cliente seleccionado: " + selectedClient);
+
+    if(selectedClient!=undefined){
+         $("#purchItemSelection").show("slow");
+         loadItems();
+    }
 }
 
 //Sorts, filters and loads items into options
 function loadItems() {
 
+    $('.optPurchItemCategory option[value=All]').attr('selected','selected');
     loadItemsIntoOptions(items);
 
     $('#optPurchItemCategory').change(function () {
@@ -424,7 +451,7 @@ function loadItems() {
         var selectedCateg = $("#optPurchItemCategory").find(":selected").text();
         var filteredItems = items;
 
-        console.log(selectedCateg);
+        //console.log(selectedCateg);
 
         if (selectedCateg != undefined && selectedCateg != "Todas") {
             filteredItems = items.filter(function (a) { return a.category == selectedCateg });
@@ -436,17 +463,15 @@ function loadItems() {
 
             //Adds items
             loadItemsIntoOptions(filteredItems);
-
-            console.log(filteredItems);
         }
 
-
+        console.log("loadItems => filteredItems cantidad: "+filteredItems.length + filteredItems);
     })
-
 }
 
 function loadItemsIntoOptions(itemsArray) {
+    $("#optPurchItem").empty();
     $(itemsArray).each(function (index, element) {
-        $("#optPurchItem").append("<option value='" + element.id + "'>" + element.id + " - " + element.name + "</option>"); $("#optPurchItem").empty();
+        $("#optPurchItem").append("<option value='" + element.id + "'>" + element.id + " - " + element.name + "</option>");
     });
 }
