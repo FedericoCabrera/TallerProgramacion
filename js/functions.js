@@ -4,6 +4,7 @@
 var clients = [];
 var items = [];
 var purchases = [];
+var purchasesLines = [];
 
 //Association between item category and icon image
 var itemImage = [
@@ -42,6 +43,9 @@ var activeForm;
 var errors = false;
 var selectedClient;
 var selectedItem;
+var purchaseTotalPrice = 0;
+var purchaseTotalItems = 0;
+var purchaseIdSequence = 0;
 
 $(document).ready(initialize);
 
@@ -55,6 +59,7 @@ function initialize() {
     $("#purchasesOptions").hide();
     $("#purchaseRegister").hide();
     $("#purchItemSelection").hide();
+    $("#purchDetails").hide();
 
 
     showForm("#clientClick", "#clientRegister");
@@ -94,6 +99,19 @@ function setSubmitEvents() {
             console.log(items);
         } else {
             showErrorMessages("#itemFormMessages");
+        }
+    });
+
+    $("#frmAddPurchase").submit(function (e) {
+        e.preventDefault();
+        createPurchase();
+        if (!errors) {
+            resetPurchaseForm();
+            showOkMessages("#purchasesFormMessages", "Compra realizada correctamente.");
+            //Prueba
+            console.log(selectedClient);
+        } else {
+            showErrorMessages("#purchasesFormMessages");
         }
     });
 }
@@ -398,10 +416,11 @@ function createItemsTable() {
 
 //Load clients, items and purchase details, it also sets buttons click events
 function loadRegisterPurchaseData() {
-    
+
     loadClients();
     $("#btnPurchClientSelect").click(clientSelection);
     loadItems();
+    $("#btnPurchItemSelect").click(createPurchaseLines);
 }
 
 //Sorts and loads clients into options
@@ -409,6 +428,7 @@ function loadClients() {
     //Resets form
     $("#optClientPurchase").empty();
     $("#purchItemSelection").hide();
+    $("#purchDetails").hide();
     //$('#frmAddPurchase')[0].reset();
 
     if (clients.length > 0) {
@@ -425,24 +445,23 @@ function loadClients() {
 }
 
 //Sets selected client
-function clientSelection(){
+function clientSelection() {
 
     var clientId = $("#optClientPurchase").find(":selected").val();
-    alert(clientId);
     selectedClient = getClientById(clientId);
-    
-    alert("Cliente seleccionado: " + selectedClient);
 
-    if(selectedClient!=undefined){
-         $("#purchItemSelection").show("slow");
-         loadItems();
+    if (selectedClient != undefined) {
+        $("#purchItemSelection").show("slow");
+        loadItems();
     }
 }
 
 //Sorts, filters and loads items into options
 function loadItems() {
 
-    $('.optPurchItemCategory option[value=All]').attr('selected','selected');
+    $("#txtPurchQuantity").val(1);
+
+    $('.optPurchItemCategory option[value=All]').attr('selected', 'selected');
     loadItemsIntoOptions(items);
 
     $('#optPurchItemCategory').change(function () {
@@ -464,14 +483,93 @@ function loadItems() {
             //Adds items
             loadItemsIntoOptions(filteredItems);
         }
-
-        console.log("loadItems => filteredItems cantidad: "+filteredItems.length + filteredItems);
     })
 }
 
+//Creates options with the array provided
 function loadItemsIntoOptions(itemsArray) {
     $("#optPurchItem").empty();
     $(itemsArray).each(function (index, element) {
         $("#optPurchItem").append("<option value='" + element.id + "'>" + element.id + " - " + element.name + "</option>");
     });
+}
+
+//Creates purchases lines and purchase details
+function createPurchaseLines() {
+
+    alert($("#optPurchItem").find(":selected").val());
+
+    var selectedItemId = $("#optPurchItem").find(":selected").val();
+
+    if (selectedItemId != undefined) {
+
+         $("#purchDetails").show("slow");
+
+        var selectedItem = getItemById(selectedItemId);
+
+        var quantity = $("#txtPurchQuantity").val();
+        var linePrice = selectedItem.price * quantity;
+        var lineItem = selectedItem.name;
+        var category = selectedItem.category;
+
+        purchaseTotalItems += parseInt(quantity);
+        purchaseTotalPrice += parseFloat(linePrice);
+
+        //Sets totals
+        $("#lblQuantityItems").empty();
+        $("#lblTotalCost").empty();
+        $("#lblQuantityItems").append("<i>" + purchaseTotalItems + "</i>");
+        $("#lblTotalCost").append("<i> $" + purchaseTotalPrice + "</i>");
+
+        //Adds purchase line to collection
+        var purchaseLineToAdd = {
+            "id": selectedItemId,
+            "name": lineItem,
+            "category": category,
+            "quantity": quantity,
+            "price": linePrice
+        }
+
+        purchasesLines.push(purchaseLineToAdd);
+
+        //Creates table
+        $("#purchDetailsTable").empty();
+        if (purchasesLines.length > 0) {
+
+            $("#purchDetailsTable").append("<tr><th>Id</th><th>Artículo</th><th>Categoría</th><th>Cantidad</th><th>Precio</th></tr>");
+            $(purchasesLines).each(function (index, element) {
+                $("#purchDetailsTable").append(" <tr><td> " + element.id +
+                    " </td> <td> " + element.name +
+                    " </td> <td> " + element.category +
+                    " </td> <td> " + element.quantity +
+                    " </td> <td> $" + element.price +
+                    " </td> </tr>");
+            });
+        } else {
+            $("#purchDetailsTable").append("<tr><td> No hay lineas ingresadas. </td></tr> ");
+        }
+
+    }
+}
+
+//Creates purchase with the purchases selected
+function createPurchase() {
+
+    var purchaseToAdd = {
+        "id": parseInt(purchaseIdSequence++),
+        "state": parseInt(0),
+        "purchaseLines": purchasesLines
+    };
+
+    selectedClient.purchases.push(purchaseToAdd);
+}
+
+//Resets purchase form
+function resetPurchaseForm() {
+    purchasesLines = [];
+    purchaseTotalItems = parseInt(0);
+    purchaseTotalPrice = parseFloat(0);
+    loadClients();
+    loadItems();
+    $("#purchDetailsTable").empty();
 }
