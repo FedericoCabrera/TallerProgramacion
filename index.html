@@ -5,8 +5,10 @@
 	<title>Administrador de articulos</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
 	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.css">
 	<script src="js/jquery-2.1.0.min.js" type="text/javascript"></script>
+	<script src="js/jquery-ui.min.js" type="text/javascript"></script>
 	<script src="js/jquery-qrcode-0.14.0.min.js" type="text/javascript"></script>
 	<script src="js/functions.js" type="text/javascript"></script>
 
@@ -19,7 +21,7 @@
 		<a href="#">Inicio <i class="fa fa-home" aria-hidden="true"></i> </a>
 		<a id="clientClick" href="#">Clientes <i class="fa fa-address-book-o" aria-hidden="true"></i> </a>
 		<a id="itemClick" href="#">Articulos <i class="fa fa-cubes" aria-hidden="true"></i> </a>
-		<a href="#">Compra <i class="fa fa-shopping-cart" aria-hidden="true"></i> </a>
+		<a id="purchaseClick" href="#">Compra <i class="fa fa-shopping-cart" aria-hidden="true"></i> </a>
 
 	</div>
 
@@ -121,6 +123,8 @@
 		</div>
 
 		<!-- Items -->
+
+		<!-- Items options -->
 		<div id="itemOptions">
 
 			<h1>Opciones de Articulos</h1>
@@ -155,7 +159,6 @@
 
 				<div class="container">
 					<h2>Ingreso de articulo</h2>
-
 					<hr>
 					<form id="frmAddItem">
 						<div class="inner-card">
@@ -177,7 +180,7 @@
 								<br>
 								<span>
 									<label> <b>Precio:</b> </label>
-									<input id="txtItemPrice" type="number" step="0.01" name="price" maxlength="10" size="10" required/>
+									<input id="txtItemPrice" type="number" step="0.01" 	min="0" name="price" maxlength="10" size="10" required/>
 								</span>
 								<br>
 								<span>
@@ -200,27 +203,30 @@
 
 							</div>
 
-							<div id="itemQR">
-								<div class="card">
-
-									<div class="container">
-										<h2>Código QR generado para el articulo <label id="lblQR"></label></h2>
-
-										<hr>
-
-										<div id="itemQRContainer" class="inner-card">
-
-
-										</div>
-
-									</div>
-								</div>
-							</div>
-
 						</div>
 					</form>
+
 				</div>
 			</div>
+			<br>
+			<br>
+			<!-- QR Code -->
+			<div id="itemQR">
+				<div class="card">
+
+					<div class="container">
+						<h2>Código QR generado para el articulo: <label id="lblQR"></label></h2>
+
+						<hr>
+
+						<div id="itemQRContainer" class="inner-card">
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+
 		</div>
 
 		<!-- Items register -->
@@ -248,6 +254,121 @@
 
 				</div>
 			</div>
+		</div>
+
+		<!-- Purchases -->
+
+		<!-- Purchases options -->
+		<div id="purchasesOptions">
+
+			<h1>Opciones de Compras</h1>
+			<hr width="80%" align="left">
+			<br>
+			<br>
+
+			<div class="options">
+				<form>
+
+					<span><input id= "btnConsultPurchase" type="button" class="hoverableButton" value="Consultar"></input></span>
+					<span><input id= "btnRegisterPurchase" type="button" class="hoverableButton" value="Registrar"></input></span>
+					<span><input id= "btnSimilarPurchases" type="button" class="hoverableButton" value="Similares"></input></span>
+					<span><input id= "btnFollowPurchase" type="button" class="hoverableButton" value="Trazabilidad"></input></span>
+
+				</form>
+			</div>
+
+		</div>
+
+		<br>
+		<br>
+
+		<!-- Purchases register -->
+		<div id="purchaseRegister" class="renderForm">
+
+
+			<h1>Compra</h1>
+			<hr width="80%" align="left">
+			<br>
+			<br>
+
+			<!-- Purchases messages -->
+			<div id="purchasesFormMessages">
+			</div>
+
+			<form id="frmAddPurchase">
+
+				<!-- Client selection -->
+				<div id="purchClientSelection" class="card">
+
+					<div class="container">
+						<h2>Seleccione cliente</h2>
+						<hr>
+
+						<div class="inner-card">
+							<div class="fields">
+
+								<span>
+										<label> <b>Cliente:</b> </label>
+										<select id="optClientCategory" required>
+
+										</select>
+								</span>
+								<br>
+							</div>
+
+							<div class="buttonArea">
+								<hr>
+								<input id="btnPurchClientSelect" type="button" align="right" value="Seleccionar"></input>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<br>
+				<!-- Item selection -->
+				<div id="purchItemSelection" class="card">
+
+					<div class="container">
+						<h2>Seleccione artículo</h2>
+						<hr>
+
+						<div class="inner-card">
+							<div class="fields">
+								<span>
+										<label> <b>Articulo:</b> </label>
+										<select id="optPurchItem" required>
+
+										</select>
+
+										<label> <b>Filtro:</b> </label>
+										<select id="optPurchItemCategory" required>
+											<option value="All">Todas</option>
+											<option value="Toys">Juguetes</option>
+											<option value="School">Escolares</option>
+											<option value="Office">Oficina</option>
+											<option value="Food">Alimentos</option>
+											<option value="Cleaning">Limpieza</option>
+											<option value="Others">Otros</option>
+										</select>
+								</span>
+								<br>
+								<span>
+									<label> <b>Cantidad:</b> </label>
+									<input id="txtPurchQuantity" type="number" min="1" name="purchQuantity" maxlength="10" size="10" required/>
+								</span>
+							</div>
+
+							<div class="buttonArea">
+								<hr>
+								<input id="btnPurchItemSelect" type="button" align="right" value="Seleccionar"></input>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</form>
+			<br>
+
 		</div>
 
 	</div>

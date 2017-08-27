@@ -49,12 +49,16 @@ function initialize() {
     $("#itemRegister").hide();
     $("#itemConsult").hide();
     $("#itemQR").hide();
+    $("#purchasesOptions").hide();
+    $("#purchaseRegister").hide();
 
     showForm("#clientClick", "#clientRegister");
     showForm("#itemClick", "#itemOptions");
+    showForm("#purchaseClick", "#purchasesOptions");
+
     showForm("#btnRegisterItems", "#itemRegister");
     showForm("#btnConsultItems", "#itemConsult", createItemsTable);
-
+    showForm("#btnRegisterPurchase", "#purchaseRegister", loadRegisterPurchaseData);
 
     setSubmitEvents();
 
@@ -95,7 +99,7 @@ function setSubmitEvents() {
 function showForm(clickEvent, formToShow, executableFunction) {
     $(clickEvent).click(function () {
         if (activeForm != formToShow) {
-            $(activeForm).hide("fast");          
+            $(activeForm).hide("fast");
             $(formToShow).slideDown("slow", function () {
                 // Animation complete.
                 activeForm = this;
@@ -169,9 +173,38 @@ function showOkMessages(fieldDiv, message) {
     $(fieldDiv).removeClass("divError");
     $(fieldDiv).addClass("divOk");
     $(fieldDiv).slideDown("slow", function () {
-        $(this).delay(3000).slideUp("slow");
+        $(this).delay(5000).slideUp("slow");
     });
 
+}
+
+//Get client by email(identifier)
+function getClientById(id) {
+
+    for (var i = 0; i < clients.length; i++) {
+        var actualClient = clients[i];
+        if (actualClient.email == id) {
+            return actualClient;
+        }
+    }
+}
+
+//Get item by code(identifier)
+function getItemById(id) {
+
+    for (var i = 0; i < items.length; i++) {
+        var actualItem = items[i];
+        if (actualItem.id == id) {
+            return actualItem;
+        }
+    }
+}
+
+//Filters an array, with the received function
+function filterElements(array, filterFunction) {
+    var returnArray = []
+    array.filter(filterFunction);
+    return returnArray;
 }
 
 /********************* Clients *********************/
@@ -205,7 +238,8 @@ function addClient() {
             "cellphone": cellphone,
             "address": address,
             "email": email,
-            "neighborhood": neighborhood
+            "neighborhood": neighborhood,
+            "purchases": []
         };
 
         clients.push(clientToAdd);
@@ -288,9 +322,27 @@ function addItem() {
         items.push(itemToAdd);
 
         //QR Code generation
-        $("#itemQR").show("explode");
-        $("#lblQR").val = name;
-        $("#itemQRContainer").empty.qrcode(itemToAdd);
+
+        $("#itemQR").show("fast", function () {
+            // Animation complete.
+            $("#itemQRContainer").hide();
+            $("#itemQRContainer").show("explode", { pieces: 8 }, 500);
+        });
+
+        //Shows item image
+        $("#lblQR").empty();
+        $("#lblQR").append("<i class=' fa " + categoryImg + "'> &nbsp; </i>" + name);
+
+        var option = {
+            text: "#" + name + "#" + id + "#" + description + "#" + price + "#" + category,
+            ecLevel: 'H',
+            radius: 0.3,
+            label: name,
+            fontname: "sans",
+            mode: 1
+        };
+
+        $("#itemQRContainer").empty().qrcode(option);
     }
 }
 
@@ -336,17 +388,65 @@ function createItemsTable() {
     }
 
 }
-/*function validateItemCategory(category) {
-    var existentItemCateg = false;
 
-    for (var i = 0; i < itemImage.length && !existentItemCateg; i++) {
-        var actualItemCateg = itemImage[i];
-        if (category == actualItemCateg.category) {
-            existentItemCateg = true;
+/********************* Purchases *********************/
+
+function loadRegisterPurchaseData() {
+    loadClients();
+    loadItems();
+}
+
+//Sorts and loads clients into options
+function loadClients() {
+    $("#optClientCategory").empty();
+
+    if (clients.length > 0) {
+        //Sorts items array by email
+        clients.sort(function (a, b) { return (a.email > b.email) ? 1 : ((b.email > a.email) ? -1 : 0); });
+
+        //Adds clients
+        $(clients).each(function (index, element) {
+            $("#optClientCategory").append("<option value='" + element.email + "'>" + element.email + " - " + element.name + "</option>");
+        });
+
+    }
+
+}
+
+//Sorts, filters and loads items into options
+function loadItems() {
+
+    loadItemsIntoOptions(items);
+
+    $('#optPurchItemCategory').change(function () {
+
+        $("#optPurchItem").empty();
+        var selectedCateg = $("#optPurchItemCategory").find(":selected").text();
+        var filteredItems = items;
+
+        console.log(selectedCateg);
+
+        if (selectedCateg != undefined && selectedCateg != "Todas") {
+            filteredItems = items.filter(function (a) { return a.category == selectedCateg });
         }
-    }
-    if (!existentItemCateg) {
-        addErrorToField("#optCategory", "Debe seleccionar una categoría válida.");
-    }
-}*/
 
+        if (filteredItems.length > 0) {
+            //Sorts items array by name
+            //filteredItems.sort(function (a, b) { return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0); });
+
+            //Adds items
+            loadItemsIntoOptions(filteredItems);
+
+            console.log(filteredItems);
+        }
+
+
+    })
+
+}
+
+function loadItemsIntoOptions(itemsArray) {
+    $(itemsArray).each(function (index, element) {
+        $("#optPurchItem").append("<option value='" + element.id + "'>" + element.id + " - " + element.name + "</option>"); $("#optPurchItem").empty();
+    });
+}
